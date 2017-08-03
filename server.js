@@ -8,6 +8,7 @@
 var fs = require('fs');
 var express = require('express');
 var app = express();
+var moment = require('moment');
 
 if (!process.env.DISABLE_XORIGIN) {
   app.use(function(req, res, next) {
@@ -36,15 +37,23 @@ app.route('/_api/package.json')
 app.route('/:value')
     .get(function(req, res) {
       
+    var dateObj = undefined
+    var myJSON = undefined
+    var dateToReturn = null
+    
     if ((new Date(req.params.value)).getTime() > 0) {
-      
-      var dateToReturn = new Date(req.params.value)
-      var dateObj = { "unix": dateToReturn.getTime(),
-                    "natural": dateToReturn.getMonth()}
-      
-      var myJSON = JSON.stringify(dateObj);
-      res.end(myJSON);
+      dateToReturn = new Date(req.params.value)
+      dateObj = { "unix": dateToReturn.getTime(),
+                    "natural": moment(dateToReturn).format("MMMM D, YYYY")
+                }
+    } else {
+      dateObj = { "unix": null,
+                    "natural": null
+                }
     }
+  
+    myJSON = JSON.stringify(dateObj);
+    res.end(myJSON);
       
     })
 
