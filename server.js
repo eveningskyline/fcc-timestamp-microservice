@@ -35,8 +35,17 @@ app.route('/_api/package.json')
   
 app.route('/:value')
     .get(function(req, res) {
-      var valid = (new Date(req.params.value)).getTime() > 0
-      res.end(valid.toString());
+      
+    if ((new Date(req.params.value)).getTime() > 0) {
+      
+      var dateToReturn = new Date(req.params.value)
+      var dateObj = { "unix": dateToReturn.getTime(),
+                    "natural": dateToReturn.getMonth()}
+      
+      var myJSON = JSON.stringify(dateObj);
+      res.end(myJSON);
+    }
+      
     })
 
 // Respond not found to all the wrong routes
