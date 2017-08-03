@@ -11,7 +11,7 @@ var app = express();
 
 if (!process.env.DISABLE_XORIGIN) {
   app.use(function(req, res, next) {
-    var allowedOrigins = ['https://narrow-plane.gomix.me', 'https://www.freecodecamp.com'];
+    var allowedOrigins = ['https://summer-pocket.glitch.me', 'https://www.freecodecamp.com'];
     var origin = req.headers.origin || '*';
     if(!process.env.XORIG_RESTRICT || allowedOrigins.indexOf(origin) > -1){
          console.log(origin);
@@ -33,9 +33,10 @@ app.route('/_api/package.json')
     });
   });
   
-app.route('/')
+app.route('/:value')
     .get(function(req, res) {
-		  res.sendFile(process.cwd() + '/views/index.html');
+      var valid = (new Date(req.params.value)).getTime() > 0
+      res.end(valid.toString());
     })
 
 // Respond not found to all the wrong routes
@@ -56,4 +57,3 @@ app.use(function(err, req, res, next) {
 app.listen(process.env.PORT, function () {
   console.log('Node.js listening ...');
 });
-
