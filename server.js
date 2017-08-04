@@ -40,7 +40,6 @@ app.route('/:value')
     var dateToParse = req.params.value    
     var dateObj = undefined
     var myObj = undefined
-    var myJSON = undefined
     
     if (parseInt(dateToParse)) {
       dateObj = new Date(req.params.value*1000)
@@ -49,17 +48,16 @@ app.route('/:value')
     }
     
     if (dateObj) {
-      myObj = { "unix": dateObj.getTime(),
+      myObj = { "unix": dateObj.getTime()/1000,
                       "natural": moment(dateObj).format("MMMM D, YYYY")
                   }    
     } else {
-      dateObj = { "unix": null,
+      myObj = { "unix": null,
                     "natural": null
                 }
     }
   
-    myJSON = JSON.stringify(dateObj);
-    res.end(myJSON);
+    res.json(myObj);
       
     })
 
