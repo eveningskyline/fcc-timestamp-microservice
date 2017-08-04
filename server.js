@@ -37,15 +37,21 @@ app.route('/_api/package.json')
 app.route('/:value')
     .get(function(req, res) {
       
+    var dateToParse = req.params.value    
     var dateObj = undefined
+    var myObj = undefined
     var myJSON = undefined
-    var dateToReturn = null
     
-    if ((new Date(req.params.value)).getTime() > 0) {
-      dateToReturn = new Date(req.params.value)
-      dateObj = { "unix": dateToReturn.getTime(),
-                    "natural": moment(dateToReturn).format("MMMM D, YYYY")
-                }
+    if (parseInt(dateToParse)) {
+      dateObj = new Date(req.params.value*1000)
+    } else if ((new Date(req.params.value)).getTime() > 0) {
+      dateObj = new Date(req.params.value)
+    }
+    
+    if (dateObj) {
+      myObj = { "unix": dateObj.getTime(),
+                      "natural": moment(dateObj).format("MMMM D, YYYY")
+                  }    
     } else {
       dateObj = { "unix": null,
                     "natural": null
